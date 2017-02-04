@@ -30,6 +30,12 @@ int32_t main(int argc, char ** argv)
     return 0;
 }
 
+// Initialize memory, that is randomize each octet and put the program at
+// the beginning.
+//
+// program - The sequence of opcodes, i.e "1 1 234 0" will output 234.
+//
+// Returns the octets of memory.
 uint8_t * init_ram(char * program)
 {
     static uint8_t ram[SIZE_OF_RAM];
@@ -40,6 +46,10 @@ uint8_t * init_ram(char * program)
     return ram;
 }
 
+// Randomize each octet of the memory.
+//
+// Not a great randomization, it creates the same sequence during a
+// whole second. But do the job.
 void randomize_ram(uint8_t * ram)
 {
     srand(time(NULL));
@@ -49,6 +59,7 @@ void randomize_ram(uint8_t * ram)
     }
 }
 
+// Replace the beginning of the memory by the program.
 void load_program(uint8_t * ram, char * program)
 {
     char * pch = strtok(program, " ");
@@ -90,29 +101,35 @@ void run(uint8_t * ram)
     }
 }
 
+// Print the octet at current instruction + 1.
 void do_print(uint8_t * ram)
 {
     printf("%d\n", ram[ram[0] + 1]);
     ram[0] += 2;
 }
 
+// Decrement octet at address given by instruction + 1.
 void do_dec(uint8_t * ram)
 {
     ram[ram[ram[0] + 1]] -= 1;
     ram[0] += 2;
 }
 
+// Increment octet at address given by instruction + 1.
 void do_inc(uint8_t * ram)
 {
     ram[ram[ram[0] + 1]] += 1;
     ram[0] += 2;
 }
 
+// Jump to address given by instruction + 1.
 void do_jmp(uint8_t * ram)
 {
     ram[0] = ram[ram[0] + 1];
 }
 
+// Jump at address given by instruction + 1, but only if octet given by
+// instruction + 2 is equal to zero.
 void do_jnz(uint8_t * ram)
 {
     if(ram[ram[ram[0] + 2]] == 0) {
