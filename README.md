@@ -76,7 +76,7 @@ There two different interpreters, one in Ruby and one in C.
 
 To compile it:
 
-    gcc -std=c11 -Wall -Wextra -Wpedantic -march=native -O2 self0.c -o self0
+    make
 
 To run it:
 
@@ -84,7 +84,7 @@ To run it:
 
 ### Tests
 
-Run the tests with `ruby tests.rb`.
+Run the tests with `make test`.
 
 ## License
 
